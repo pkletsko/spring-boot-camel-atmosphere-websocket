@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="WARN" shutdownHook="disable">
+    <Properties>
+        <Property name="filename">logs/onboarding.log</Property>
+        <Property name="patternLayout">%-5p %d %c: %m%n</Property>
+        <Property name="maxFileSize">10 MB</Property>
+        <Property name="maxFilesToKeep">5</Property>
+
+        <!-- Access log -->
+        <Property name="accessLogFilename">logs/log4jA.log</Property>
+        <Property name="accessLogMaxFilesToKeep">10</Property>
+
+        <!-- Info log -->
+        <Property name="messagePatternLayout">%-5p %d : %m%n</Property>
+        <Property name="messageLogFilename">logs/messages.log</Property>
+        <Property name="messageLogMaxFilesToKeep">10</Property>
+    </Properties>
+
+    <Appenders>
+
+        <RollingFile name="appLog" fileName="${filename}" filePattern="${filename}.%i" append="true">
+            <PatternLayout pattern="${patternLayout}"/>
+            <Policies>
+                <SizeBasedTriggeringPolicy size="${maxFileSize}"/>
+            </Policies>
+            <DefaultRolloverStrategy max="${maxFilesToKeep}"/>
+        </RollingFile>
+
+        <RollingFile name="accessLog" fileName="${accessLogFilename}" filePattern="${accessLogFilename}.%i" append="true">
+            <Policies>
+                <SizeBasedTriggeringPolicy size="${maxFileSize}"/>
+            </Policies>
+            <DefaultRolloverStrategy max="${accessLogMaxFilesToKeep}"/>
+        </RollingFile>
+
+        <RollingFile name="messageLog" fileName="${messageLogFilename}" filePattern="${messageLogFilename}.%i" append="true">
+            <PatternLayout pattern="${messagePatternLayout}"/>
+            <Policies>
+                <SizeBasedTriggeringPolicy size="${maxFileSize}"/>
+            </Policies>
+            <DefaultRolloverStrategy max="${messageLogMaxFilesToKeep}"/>
+        </RollingFile>
+    </Appenders>
+
+
+    <Loggers>
+        <Root level="WARN">
+            <AppenderRef ref="appLog"/>
+        </Root>
+        <!-- Route http access-log to separate file -->
+        <Logger name="http.accesslog" level="INFO" additivity="false">
+            <AppenderRef ref="accessLog"/>
+        </Logger>
+
+        <Logger name="com.greenbird.learning.onboarding.integration" level="INFO">
+            <AppenderRef ref="messageLog"/>
+        </Logger>
+        <Logger name="com.greenbird.configuration.report.ConfigurationReporter" level="INFO"/>
+        <!-- Remove warning about tls-default.conf not being overridden. Should have been INFO -->
+        <Logger name="org.mule.api.security.tls.TlsProperties" level="ERROR"/>
+        <!-- Stop warnings regarding ambiguous setters etc. -->
+        <Logger name="org.springframework.context.annotation.ConfigurationClassEnhancer" level="ERROR"/>
+        <!-- Remove verbose warnings about 404s etc. -->
+        <Logger name="no.dikt.integration.mule.http.NtmlSupportingHttpConnector" level="ERROR"/>
+        <!-- Remove startup message that should have been info -->
+        <Logger name="org.mule.transport.jms.JmsMessageDispatcher" level="ERROR"/>
+
+
+
+
+        <!--
+            Remove "Schema element xxx references undefined type" ERRORS related to the
+            RPW service schema. The log bleeds over from the CXF log of the hr-files app
+        -->
+        <Logger name="org.apache.cxf.service.factory.ReflectionServiceFactoryBean" level="FATAL"/>
+    </Loggers>
+</Configuration>

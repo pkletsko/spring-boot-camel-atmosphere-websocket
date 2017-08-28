@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="WARN" shutdownHook="disable">
+    <Appenders>
+        <Console name="Console" target="SYSTEM_OUT">
+            <PatternLayout pattern="[%-4p] %d [%t] %c: %m%n"/>
+        </Console>
+    </Appenders>
+    <Loggers>
+        <Root level="INFO">
+            <AppenderRef ref="Console"/>
+        </Root>
+        <Logger name="com.greenbird.learning.onboarding.integration" level="INFO"/>
+        <!--# Stop warnings regarding ambiguous setters etc.-->
+        <Logger name="org.springframework.beans.GenericTypeAwarePropertyDescriptor" level="ERROR"/>
+        <!-- Remove startup message that should have been info -->
+        <Logger name="org.mule.transport.jms.JmsMessageDispatcher" level="ERROR"/>
+
+        <!--Stop Bean-warnings -->
+        <Logger name="org.springframework.context.annotation.ConfigurationClassEnhancer" level="ERROR"/>
+
+    </Loggers>
+</Configuration>
