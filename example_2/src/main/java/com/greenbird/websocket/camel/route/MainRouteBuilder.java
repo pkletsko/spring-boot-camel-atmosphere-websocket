@@ -22,7 +22,6 @@ public class MainRouteBuilder extends RouteBuilder {
     private WebsocketNotDeliveredMessageProcessor websocketNotDeliveredMessageProcessor;
 
     public void configure() {
-        // Define routing rules here:
         from("atmosphere-websocket:///chat")
                 .choice()
                     .when(header(WebsocketConstants.EVENT_TYPE).isEqualTo(WebsocketConstants.ONOPEN_EVENT_TYPE))

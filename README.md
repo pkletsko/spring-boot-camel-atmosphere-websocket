@@ -9,9 +9,9 @@ Those examples tested with next libs:
 
 1) Spring 1.5.6.RELEASE
 
-2) Atmosphere 2.4.9
+2) Atmosphere 2.4.10
 
-3) Camel 2.19.3 (this buld will include changes in camel-atmospher-ws component)
+3) Camel 2.20.0 (this buld will include changes in camel-atmospher-ws component)
 
 4) Embedded Tomcat 8.5.16  or Jetty 9.4.6.v20170531 
 
